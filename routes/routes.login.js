@@ -36,7 +36,7 @@ const hook = (main) => {
     //     });
     // })
 
-    router.post("/try", async (req, res) => {
+    router.post("/try",async (req, res) => {
         try {
             let { username, password } = req.body;
             console.log("login incoming " + username);

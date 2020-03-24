@@ -8,8 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build":"npm install",
-    "start":"node ."
+    "build": "npm install",
+    "start": "node ."
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +22,8 @@
     "jsonwebtoken": "^8.5.1",
     "passport-local": "^1.0.0",
     "puppeteer": "^2.1.1",
+    "rate-limiter-flexible": "^2.1.3",
+    "redis": "^3.0.2",
     "youtube-dl": "^3.0.2"
   }
 }
