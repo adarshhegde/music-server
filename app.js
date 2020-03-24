@@ -45,6 +45,6 @@ fs.readdir(path.join(__dirname, process.env.routes_dir || "routes"), async funct
     }
 
 
-    app.listen(process.env.PORT, () => console.log(`Server listening on port ${process.env.port}`));
+    app.listen(process.env.PORT || 4829, () => console.log(`Server listening on port ${process.env.PORT}`));
 
 })

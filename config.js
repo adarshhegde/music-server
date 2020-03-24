@@ -1,7 +1,5 @@
 
 let temp = {
-
-    PORT: 4829,
     SECRET: "secret!?",
     routes_dir: "/routes",
     SESS_NAME:"s1",
