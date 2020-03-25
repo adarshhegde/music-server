@@ -235,7 +235,7 @@ const LibraryController = {
             Library.find({userId}, (err, result) => {
                 if(err) return reject(err);
                 let _library = result[0];
-                _library.library = {mytracks: [...newtrack,..._library.library.mytracks]};
+                _library.library = {mytracks: [newtrack,..._library.library.mytracks]};
                 _library.save((err, doc) => {
                     if(err) return reject(err);
                     resolve(true);
