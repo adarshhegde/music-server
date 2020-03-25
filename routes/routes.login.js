@@ -39,7 +39,7 @@ const hook = (main) => {
     router.post("/try",async (req, res) => {
         try {
             let { username, password } = req.body;
-            console.log("login incoming " + username);
+            if(username === undefined || password === undefined) return res.sendStatus(400);
             username = username.trim();
             password = password.trim();
             if (username.length < 1 || password.length < 1) return res.send({ error: 1 });
@@ -50,10 +50,9 @@ const hook = (main) => {
             {
                 let token = jwt.sign({userId: status.userId},
                     process.env.SECRET,
-                    { expiresIn: '24h' // expires in 24 hours
-                    }
+                    { expiresIn: '24h' }
                   );
-                  // return the JWT token for the future API calls
+              
                   res.json({
                     success: true,
                     message: 'Authentication successful!',
@@ -62,6 +61,43 @@ const hook = (main) => {
             }
             else
                 res.send({ error: 1 })
+        }
+
+        catch (err) {
+            console.log(err)
+            res.sendStatus(500);
+        }
+
+
+    })
+  
+    router.post("/register",async (req, res) => {
+        try {
+            let { username, password } = req.body;
+            if(username === undefined || password === undefined) return res.sendStatus(400);
+            username = username.trim();
+            password = password.trim();
+            if (username.length < 1 || password.length < 1) return res.send({ error: 1 });
+
+            let status = await UserController.tryRegister(username, password);
+            console.log(username, password, status);
+            if ("error" in status)
+            {
+                return res.send({ error: status.error })
+            }
+            else {
+                
+                let token = jwt.sign({userId: status.userId},
+                    process.env.SECRET,
+                    { expiresIn: '24h' }
+                  );
+
+                  res.json({
+                    success: true,
+                    message: 'registration successful!',
+                    token: token
+                  });
+            }
         }
 
         catch (err) {

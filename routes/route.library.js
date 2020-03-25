@@ -14,13 +14,13 @@ const hook = (main) => {
             const { userId } = req.decoded;
             if (!userId) return res.sendStatus(403);
 
-            const library = await LibraryController.getLibrary(userId);
+            const list = await LibraryController.getFrequentlyPlayed(userId);
 
-            if(library === false) 
+            if(list === false) 
             {
                 res.sendStatus(400);
             } else {
-                res.send(library.frequentlyplayed);
+                res.send(list);
             }
         } catch (err) {
             res.sendStatus(500);
@@ -36,15 +36,21 @@ const hook = (main) => {
 
             if(library === false) 
             {
-                req.session.destroy();
                 res.sendStatus(403);
             } else {
                 res.send(library.mytracks);
             }
         } catch (err) {
+            console.log(err);
             res.sendStatus(500);
         }
     })
+
+    router.get("/playtrack", async (req, res) => {
+        let all = await LibraryController.incrementPlays("adarsh","t5");
+        res.send(JSON.stringify(all));
+    })
+
     return router;
 }
 module.exports = { root: "/library", hook };

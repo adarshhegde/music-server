@@ -180,20 +180,103 @@ const LibraryStore = [
     }
 ];
 
+const Library = require("../models/library.model")
+const mongoose = require("mongoose")
 
 const LibraryController = {
 
+    getFrequentlyPlayed: async (userId) => {
+        return new Promise((resolve, reject) => {
+
+            Library.find({userId}, (err, result) => {
+                if(err) return reject(err);
+                
+                if(result.length === 0) return reject(err);
+                let tracks = result[0].library.mytracks;
+                let out = tracks
+                .filter(track => track.plays > 0)
+                .sort((t1, t2) => (t1.plays > t2.plays) ? -1 : ((t2.plays > t1.plays) ? 1 : 0));
+                resolve(out);
+                })
+            });
+
+    },
     getLibrary: async (userId) => {
-        console.log("userid",userId);
-        const library = LibraryStore.find(lib => {
-            return lib.userId === userId});
-        console.log(library);
-        if(library) return library.library;
-        else return false;
+
+        return new Promise((resolve, reject) => {
+
+            Library.find({userId}, (err, result) => {
+                if(err) return reject(err);
+                if(result.length === 0) return reject(err);
+                let _library = result[0];
+                    resolve(_library.library);
+                })
+            });
+
+    },
+
+    addLibrary: async (userId, initialTracks) => {
+        return new Promise((resolve, reject) => {
+            const temp = { userId, library: { 
+                mytracks: [...initialTracks]
+             } };
+    
+             Library.create(temp, function (err, _library) {
+                if (err) return reject(err);
+                return resolve(_library);
+              });
+             
+        });
+    },
+
+    addTrackToLibrary: async (userId, newtrack) => {
+        return new Promise((resolve, reject) => {
+
+            Library.find({userId}, (err, result) => {
+                if(err) return reject(err);
+                let _library = result[0];
+                _library.library = {mytracks: [...newtrack,..._library.library.mytracks]};
+                _library.save((err, doc) => {
+                    if(err) return reject(err);
+                    resolve(true);
+                })
+            });
+            
+        });
+    },
+    incrementPlays: async (userId, track_id) => {
+        return new Promise((resolve, reject) => {
+
+            Library.find({userId}, (err, result) => {
+                if(err) return reject(err);
+                let _library = result[0];
+                const temp = _library.library.mytracks.map(track => {
+                    let temp2 = {...track};
+                    if(temp2.track_id === track_id) temp2.plays += 1;
+                    return temp2;
+                })
+               
+                _library.library = {mytracks: temp};
+                _library.save((err, doc) => {
+                    if(err) return reject(err);
+                    resolve(true);
+                })
+            });
+            
+        });
+    },
+
+    retrieveAll: async () => {
+        return new Promise((resolve, reject) => {
+            Library.find({}, (err, libs) => {
+                if(err) return reject(err);
+                resolve(libs);
+            });
+
+        });
     }
 
 };
-
 
 
 module.exports = { ...LibraryController };
