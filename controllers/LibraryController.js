@@ -254,8 +254,7 @@ const LibraryController = {
                     let temp2 = {...track};
                     if(temp2.track_id === track_id) temp2.plays += 1;
                     return temp2;
-                })
-               
+                })               
                 _library.library = {mytracks: temp};
                 _library.save((err, doc) => {
                     if(err) return reject(err);
@@ -278,5 +277,5 @@ const LibraryController = {
 
 };
 
-
+console.log(Library);
 module.exports = { ...LibraryController };
