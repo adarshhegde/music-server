@@ -16,7 +16,7 @@ const hook = (main) => {
             youtubedl.getInfo(url, [], function(err, info) {
             if (err) throw err
             res.send(info.formats[0].url, null, 1);
-            cache[req.params.id] = info.formats[0].url;
+            // cache[req.params.id] = info.formats[0].url;
             // LibraryController.incrementPlays(userId, track_id);
         });} else {
             console.log("serving " + req.params.id + " from cache.");
