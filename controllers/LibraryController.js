@@ -235,6 +235,7 @@ const LibraryController = {
             Library.find({userId}, (err, result) => {
                 if(err) return reject(err);
                 let _library = result[0];
+                if(_library.library.mytracks.find( track => track.track_id === newtrack.track_id )) {return resolve(true);}
                 _library.library = {mytracks: [newtrack,..._library.library.mytracks]};
                 _library.save((err, doc) => {
                     if(err) return reject(err);
@@ -276,6 +277,5 @@ const LibraryController = {
     }
 
 };
-
-console.log(Library);
+global.Library = Library;
 module.exports = { ...LibraryController };
