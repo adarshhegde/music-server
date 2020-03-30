@@ -251,6 +251,7 @@ const LibraryController = {
             Library.find({userId}, (err, result) => {
                 if(err) return reject(err);
                 let _library = result[0];
+                if(_library === undefined) return reject(false);
                 const temp = _library.library.mytracks.map(track => {
                     let temp2 = {...track};
                     if(temp2.track_id === track_id) temp2.plays += 1;

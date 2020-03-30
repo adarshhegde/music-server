@@ -31,9 +31,13 @@ app.use(cors(corsOptions));
 
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
+app.use(bodyParser.text());
+
 app.get("/", (req, res) => {
     res.send("hii")
 })
+
+
 app.get("/host", (req, res) => {
     res.send(req.headers.host)
 })
